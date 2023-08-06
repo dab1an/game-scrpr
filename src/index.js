@@ -1,17 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import "./index.css";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+import puppeteer from "puppeteer";
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+async function start() {
+  const browser = await puppeteer.launch({
+    defaultViewport: false,
+    userDataDir: "./tmp",
+  });
+  const page = await browser.newPage();
+
+  await page.goto(
+    "https://www.amazon.com/s?bbn=468642&rh=n%3A468642%2Cp_n_deal_type%3A23566064011&dc&qid=1691292089&rnid=23566063011&ref=lp_11846801_nr_p_n_deal_type_1https://www.amazon.com/s?bbn=468642&rh=n%3A468642%2Cp_n_deal_type%3A23566064011&dc&qid=1691292089&rnid=23566063011&ref=lp_11846801_nr_p_n_deal_type_1"
+  );
+
+  const productNames = await page.$$(
+    ".s-main-slot .s-result-list .s-search-results .sg-row"
+  );
+
+  for (const productName of productNames) {
+    const title = await page.evaluate(
+      (el) => el.querySelector("a-text-normal").textContent,
+      productName
+    );
+    console.log(title);
+  }
+}
+
+start();
