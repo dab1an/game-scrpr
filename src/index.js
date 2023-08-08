@@ -1,29 +1,29 @@
-import "./index.css";
-
 import puppeteer from "puppeteer";
 
-async function start() {
+(async () => {
   const browser = await puppeteer.launch({
-    defaultViewport: false,
     userDataDir: "./tmp",
+    headless: false,
+    defaultViewport: false,
   });
   const page = await browser.newPage();
 
   await page.goto(
-    "https://www.amazon.com/s?bbn=468642&rh=n%3A468642%2Cp_n_deal_type%3A23566064011&dc&qid=1691292089&rnid=23566063011&ref=lp_11846801_nr_p_n_deal_type_1https://www.amazon.com/s?bbn=468642&rh=n%3A468642%2Cp_n_deal_type%3A23566064011&dc&qid=1691292089&rnid=23566063011&ref=lp_11846801_nr_p_n_deal_type_1"
+    "https://www.amazon.com/s?bbn=468642&rh=n:468642,p_n_deal_type:23566064011&dc&qid=1691454769&rnid=23566063011"
   );
 
-  const productNames = await page.$$(
-    ".s-main-slot .s-result-list .s-search-results .sg-row"
+  const products = await page.$$(
+    "div.s-main-slot.s-result-list.s-search-results.sg-row > .s-result-item"
   );
 
-  for (const productName of productNames) {
-    const title = await page.evaluate(
-      (el) => el.querySelector("a-text-normal").textContent,
-      productName
-    );
-    console.log(title);
+  for (const product of products) {
+    try {
+      const title = await page.evaluate(
+        (el) => el.querySelector("h2 > a > span").textContent,
+        product
+      );
+      console.log(title);
+      console.log();
+    } catch (error) {}
   }
-}
-
-start();
+})();
