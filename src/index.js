@@ -17,17 +17,26 @@ import puppeteer from "puppeteer";
   );
 
   for (const product of products) {
+    let title = null;
+    let price = null;
+    let salePrice = null;
+    let proudctImage = null;
+
     try {
       const title = await page.evaluate(
         (el) => el.querySelector("h2 > a > span").textContent,
         product
       );
+    } catch (error) {}
 
+    try {
       const price = await page.evaluate(
         (el) => el.querySelector(".a-price > .a-offscreen").textContent,
         product
       );
+    } catch (error) {}
 
+    try {
       const salePrice = await page.evaluate(
         (el) =>
           el.querySelector(
@@ -35,14 +44,16 @@ import puppeteer from "puppeteer";
           ).textContent,
         product
       );
+    } catch (error) {}
 
+    try {
       const proudctImage = await page.evaluate(
         (el) => el.querySelector(".s-image").getAttribute("src"),
         product
       );
-
-      console.log(salePrice);
-      console.log();
     } catch (error) {}
+
+    console.log(salePrice);
+    console.log();
   }
 })();
