@@ -17,27 +17,27 @@ import puppeteer from "puppeteer";
   );
 
   for (const product of products) {
-    let title = null;
-    let price = null;
-    let salePrice = null;
+    let title = "Null";
+    let price = "Null";
+    let salePrice = "Null";
     let proudctImage = null;
 
     try {
-      const title = await page.evaluate(
+      title = await page.evaluate(
         (el) => el.querySelector("h2 > a > span").textContent,
         product
       );
     } catch (error) {}
 
     try {
-      const price = await page.evaluate(
+      price = await page.evaluate(
         (el) => el.querySelector(".a-price > .a-offscreen").textContent,
         product
       );
     } catch (error) {}
 
     try {
-      const salePrice = await page.evaluate(
+      salePrice = await page.evaluate(
         (el) =>
           el.querySelector(
             "a > div > span.a-price.a-text-price > span.a-offscreen"
@@ -47,13 +47,14 @@ import puppeteer from "puppeteer";
     } catch (error) {}
 
     try {
-      const proudctImage = await page.evaluate(
+      proudctImage = await page.evaluate(
         (el) => el.querySelector(".s-image").getAttribute("src"),
         product
       );
     } catch (error) {}
 
-    console.log(salePrice);
+    console.log(title);
     console.log();
+    console.log(price + " --> " + salePrice);
   }
 })();
