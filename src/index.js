@@ -22,7 +22,26 @@ import puppeteer from "puppeteer";
         (el) => el.querySelector("h2 > a > span").textContent,
         product
       );
-      console.log(title);
+
+      const price = await page.evaluate(
+        (el) => el.querySelector(".a-price > .a-offscreen").textContent,
+        product
+      );
+
+      const salePrice = await page.evaluate(
+        (el) =>
+          el.querySelector(
+            "a > div > span.a-price.a-text-price > span.a-offscreen"
+          ).textContent,
+        product
+      );
+
+      const proudctImage = await page.evaluate(
+        (el) => el.querySelector(".s-image").getAttribute("src"),
+        product
+      );
+
+      console.log(salePrice);
       console.log();
     } catch (error) {}
   }
