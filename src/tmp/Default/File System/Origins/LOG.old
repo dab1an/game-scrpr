@@ -1,3 +1,2 @@
-2023/08/10-16:48:38.018 8403 Reusing MANIFEST /Users/dabian/Desktop/game-scrpr/src/tmp/Default/File System/Origins/MANIFEST-000001
-2023/08/10-16:48:38.018 8403 Recovering log #3
-2023/08/10-16:48:38.018 8403 Reusing old log /Users/dabian/Desktop/game-scrpr/src/tmp/Default/File System/Origins/000003.log 
+2023/08/13-21:05:06.416 f203 Creating DB /Users/dabian/Desktop/game-scrpr/src/tmp/Default/File System/Origins since it was missing.
+2023/08/13-21:05:06.426 f203 Reusing MANIFEST /Users/dabian/Desktop/game-scrpr/src/tmp/Default/File System/Origins/MANIFEST-000001

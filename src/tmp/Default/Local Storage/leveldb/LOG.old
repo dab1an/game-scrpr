@@ -1,3 +1,2 @@
-2023/08/10-16:48:36.486 3f03 Reusing MANIFEST /Users/dabian/Desktop/game-scrpr/src/tmp/Default/Local Storage/leveldb/MANIFEST-000001
-2023/08/10-16:48:36.487 3f03 Recovering log #6
-2023/08/10-16:48:36.487 3f03 Reusing old log /Users/dabian/Desktop/game-scrpr/src/tmp/Default/Local Storage/leveldb/000006.log 
+2023/08/13-21:05:04.791 3203 Creating DB /Users/dabian/Desktop/game-scrpr/src/tmp/Default/Local Storage/leveldb since it was missing.
+2023/08/13-21:05:04.810 3203 Reusing MANIFEST /Users/dabian/Desktop/game-scrpr/src/tmp/Default/Local Storage/leveldb/MANIFEST-000001

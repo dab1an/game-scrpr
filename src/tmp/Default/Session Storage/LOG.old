@@ -1,3 +1,2 @@
-2023/08/10-16:48:37.217 3f03 Reusing MANIFEST /Users/dabian/Desktop/game-scrpr/src/tmp/Default/Session Storage/MANIFEST-000001
-2023/08/10-16:48:37.218 3f03 Recovering log #3
-2023/08/10-16:48:37.219 3f03 Reusing old log /Users/dabian/Desktop/game-scrpr/src/tmp/Default/Session Storage/000003.log 
+2023/08/13-21:05:04.791 2d03 Creating DB /Users/dabian/Desktop/game-scrpr/src/tmp/Default/Session Storage since it was missing.
+2023/08/13-21:05:04.813 2d03 Reusing MANIFEST /Users/dabian/Desktop/game-scrpr/src/tmp/Default/Session Storage/MANIFEST-000001

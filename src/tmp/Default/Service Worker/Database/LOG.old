@@ -1,3 +1,2 @@
-2023/08/10-16:48:36.436 b703 Reusing MANIFEST /Users/dabian/Desktop/game-scrpr/src/tmp/Default/Service Worker/Database/MANIFEST-000001
-2023/08/10-16:48:36.436 b703 Recovering log #3
-2023/08/10-16:48:36.436 b703 Reusing old log /Users/dabian/Desktop/game-scrpr/src/tmp/Default/Service Worker/Database/000003.log 
+2023/08/13-21:05:07.291 8703 Creating DB /Users/dabian/Desktop/game-scrpr/src/tmp/Default/Service Worker/Database since it was missing.
+2023/08/13-21:05:07.305 8703 Reusing MANIFEST /Users/dabian/Desktop/game-scrpr/src/tmp/Default/Service Worker/Database/MANIFEST-000001
