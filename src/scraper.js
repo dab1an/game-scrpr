@@ -16,45 +16,45 @@ import puppeteer from "puppeteer";
     "div.s-main-slot.s-result-list.s-search-results.sg-row > .s-result-item"
   );
 
+  let itemList = [];
+  let j = 0;
+
   for (const product of products) {
-    let title = "Null";
-    let price = "Null";
-    let salePrice = "Null";
-    let proudctImage = null;
+    let item = new Object();
 
     try {
-      title = await page.evaluate(
+      item.title = await page.evaluate(
         (el) => el.querySelector("h2 > a > span").textContent,
         product
       );
-    } catch (error) {}
 
-    try {
-      price = await page.evaluate(
+      item.salePrice = await page.evaluate(
         (el) => el.querySelector(".a-price > .a-offscreen").textContent,
         product
       );
-    } catch (error) {}
 
-    try {
-      salePrice = await page.evaluate(
+      item.price = await page.evaluate(
         (el) =>
           el.querySelector(
             "a > div > span.a-price.a-text-price > span.a-offscreen"
           ).textContent,
         product
       );
-    } catch (error) {}
 
-    try {
-      proudctImage = await page.evaluate(
+      const proudctImage = await page.evaluate(
         (el) => el.querySelector(".s-image").getAttribute("src"),
         product
       );
     } catch (error) {}
 
-    console.log(title);
+    itemList.push(item);
+    j++;
+  }
+
+  itemList = itemList.filter((item) => item.title);
+
+  for (let i = 0; i < itemList.length; i++) {
+    console.log(i + " " + itemList[i].title);
     console.log();
-    console.log(price + " --> " + salePrice);
   }
 })();
