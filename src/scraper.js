@@ -9,7 +9,7 @@ import puppeteer from "puppeteer";
   const page = await browser.newPage();
 
   await page.goto(
-    "https://www.amazon.com/s?bbn=468642&rh=n:468642,p_n_deal_type:23566064011&dc&qid=1691454769&rnid=23566063011"
+    "https://www.amazon.com/s?k=computer+servers&i=computers&rh=n%3A541966%2Cp_101%3A19346686011%2Cp_72%3A1248879011%2Cp_36%3A1253507011&dc&crid=2IGL1IWUMRYBX&qid=1692316305&rnid=386442011&sprefix=servers%2Ccomputers%2C128&ref=sr_pg_1"
   );
 
   const products = await page.$$(
@@ -21,6 +21,7 @@ import puppeteer from "puppeteer";
 
   for (const product of products) {
     let item = new Object();
+    let btnDisabled = false;
 
     try {
       item.title = await page.evaluate(
@@ -49,6 +50,23 @@ import puppeteer from "puppeteer";
 
     itemList.push(item);
     j++;
+
+    await page.waitForSelector(
+      "a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator",
+      { visible: true }
+    ); //waits for button to be visible on page
+
+    const isDisabled =
+      (await page.$(
+        "span.s-pagination-item.s-pagination-next.s-pagination-disabled"
+      )) !== null;
+    btnDisabled = isDisabled;
+
+    if (!btnDisabled) {
+      await page.click(
+        "a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator"
+      );
+    }
   }
 
   itemList = itemList.filter((item) => item.title);
