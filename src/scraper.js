@@ -9,7 +9,7 @@ import puppeteer from "puppeteer";
   const page = await browser.newPage();
 
   await page.goto(
-    "https://www.amazon.com/s?k=computer+servers&i=computers&rh=n%3A541966%2Cp_101%3A19346686011%2Cp_72%3A1248879011%2Cp_36%3A1253507011&dc&crid=2IGL1IWUMRYBX&qid=1692316305&rnid=386442011&sprefix=servers%2Ccomputers%2C128&ref=sr_pg_1"
+    "https://www.amazon.com/s?bbn=468642&rh=n%3A468642%2Cp_n_deal_type%3A23566064011&dc&qid=1691454769&rnid=23566063011"
   );
 
   const products = await page.$$(
@@ -60,6 +60,7 @@ import puppeteer from "puppeteer";
       (await page.$(
         "span.s-pagination-item.s-pagination-next.s-pagination-disabled"
       )) !== null;
+
     btnDisabled = isDisabled;
 
     if (!btnDisabled) {
@@ -70,9 +71,10 @@ import puppeteer from "puppeteer";
   }
 
   itemList = itemList.filter((item) => item.title);
+  itemList = itemList.filter((item) => item.price);
 
   for (let i = 0; i < itemList.length; i++) {
-    console.log(i + " " + itemList[i].title);
+    console.log(i + " " + itemList[i].price);
     console.log();
   }
 })();
