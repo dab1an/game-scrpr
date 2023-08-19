@@ -31,16 +31,15 @@ const Home = () => {
 
   return (
     <div>
-      {products.map(function (product) {
-        <p>{product.title}</p>;
-        // <Product
-        //   title={product.title}
-        //   price={product.price}
-        //   salePrice={product.salePrice}
-        //   percentOff={product.discount}
-        //   productImage={product.productImage}
-        // />;
-      })}
+      {products.map((product) => (
+        <Product
+          title={product.title}
+          price={product.price}
+          salePrice={product.salePrice}
+          percentOff={product.discount}
+          productImage={product.productImage}
+        />
+      ))}
     </div>
   );
 };

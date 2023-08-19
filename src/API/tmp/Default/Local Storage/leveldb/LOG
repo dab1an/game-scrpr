@@ -1,5 +1,5 @@
-2023/08/18-21:54:08.911 4a78 Reusing MANIFEST C:\Users\Dabian\Desktop\game-scrpr\src\APi\tmp\Default\Local Storage\leveldb/MANIFEST-000001
-2023/08/18-21:54:08.912 4a78 Recovering log #65
-2023/08/18-21:54:08.913 4a78 Level-0 table #68: started
-2023/08/18-21:54:08.975 4a78 Level-0 table #68: 95676 bytes OK
-2023/08/18-21:54:08.984 4a78 Delete type=0 #65
+2023/08/18-22:12:31.932 1f6c Reusing MANIFEST C:\Users\Dabian\Desktop\game-scrpr\src\APi\tmp\Default\Local Storage\leveldb/MANIFEST-000001
+2023/08/18-22:12:31.934 1f6c Recovering log #72
+2023/08/18-22:12:31.936 1f6c Level-0 table #74: started
+2023/08/18-22:12:31.947 1f6c Level-0 table #74: 136231 bytes OK
+2023/08/18-22:12:31.956 1f6c Delete type=0 #72

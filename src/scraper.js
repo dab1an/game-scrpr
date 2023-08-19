@@ -43,7 +43,7 @@ export const scraper = async () => {
 
       item.discount = ((item.price - item.salePrice) / item.price) * 100;
 
-      item.proudctImage = await page.evaluate(
+      item.productImage = await page.evaluate(
         (el) => el.querySelector(".s-image").getAttribute("src"),
         product
       );
