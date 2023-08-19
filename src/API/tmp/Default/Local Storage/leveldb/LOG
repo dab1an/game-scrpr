@@ -1,5 +1,14 @@
-2023/08/18-22:12:31.932 1f6c Reusing MANIFEST C:\Users\Dabian\Desktop\game-scrpr\src\APi\tmp\Default\Local Storage\leveldb/MANIFEST-000001
-2023/08/18-22:12:31.934 1f6c Recovering log #72
-2023/08/18-22:12:31.936 1f6c Level-0 table #74: started
-2023/08/18-22:12:31.947 1f6c Level-0 table #74: 136231 bytes OK
-2023/08/18-22:12:31.956 1f6c Delete type=0 #72
+2023/08/18-22:39:22.673 5a74 Reusing MANIFEST C:\Users\Dabian\Desktop\game-scrpr\src\APi\tmp\Default\Local Storage\leveldb/MANIFEST-000001
+2023/08/18-22:39:22.673 5a74 Recovering log #140
+2023/08/18-22:39:22.675 5a74 Level-0 table #142: started
+2023/08/18-22:39:22.710 5a74 Level-0 table #142: 172469 bytes OK
+2023/08/18-22:39:22.712 5a74 Delete type=0 #140
+2023/08/18-22:39:22.713 5a74 Compacting 4@0 + 1@1 files
+2023/08/18-22:39:22.722 5a74 Generated table #144@0: 44 keys, 172703 bytes
+2023/08/18-22:39:22.722 5a74 Compacted 4@0 + 1@1 files => 172703 bytes
+2023/08/18-22:39:22.723 5a74 compacted to: files[ 0 1 0 0 0 0 0 ]
+2023/08/18-22:39:22.723 5a74 Delete type=2 #131
+2023/08/18-22:39:22.723 5a74 Delete type=2 #133
+2023/08/18-22:39:22.723 5a74 Delete type=2 #136
+2023/08/18-22:39:22.723 5a74 Delete type=2 #139
+2023/08/18-22:39:22.723 5a74 Delete type=2 #142

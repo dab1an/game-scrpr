@@ -41,13 +41,20 @@ export const scraper = async () => {
         product
       );
 
-      item.discount = ((item.price - item.salePrice) / item.price) * 100;
+      item.discount = Math.round(
+        ((parseFloat(item.price.substring(1)) -
+          parseFloat(item.salePrice.substring(1))) /
+          parseFloat(item.price.substring(1))) *
+          100
+      );
 
       item.productImage = await page.evaluate(
         (el) => el.querySelector(".s-image").getAttribute("src"),
         product
       );
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
 
     itemList.push(item);
     j++;
@@ -73,6 +80,7 @@ export const scraper = async () => {
 
   itemList = itemList.filter((item) => item.title);
   itemList = itemList.filter((item) => item.price);
+  itemList = itemList.filter((item) => item.discount);
 
   for (let i = 0; i < itemList.length; i++) {
     console.log(i + " " + itemList[i].price);

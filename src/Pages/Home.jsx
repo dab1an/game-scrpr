@@ -20,7 +20,7 @@ const Home = () => {
     async function fetch() {
       const data = await fetchData();
       setProducts(data);
-      console.log(products);
+      console.log(data);
     }
     fetch();
   }, []);
@@ -36,8 +36,9 @@ const Home = () => {
           title={product.title}
           price={product.price}
           salePrice={product.salePrice}
-          percentOff={product.discount}
+          discount={product.discount}
           productImage={product.productImage}
+          key={product.title}
         />
       ))}
     </div>
