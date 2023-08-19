@@ -1,9 +1,8 @@
 import puppeteer from "puppeteer";
 
-(async () => {
+export const scraper = async () => {
   const browser = await puppeteer.launch({
     userDataDir: "./tmp",
-    headless: false,
     defaultViewport: false,
   });
   const page = await browser.newPage();
@@ -21,7 +20,7 @@ import puppeteer from "puppeteer";
 
   for (const product of products) {
     let item = new Object();
-    let btnDisabled = false;
+    // let btnDisabled = false;
 
     try {
       item.title = await page.evaluate(
@@ -42,7 +41,9 @@ import puppeteer from "puppeteer";
         product
       );
 
-      const proudctImage = await page.evaluate(
+      item.discount = ((item.price - item.salePrice) / item.price) * 100;
+
+      item.proudctImage = await page.evaluate(
         (el) => el.querySelector(".s-image").getAttribute("src"),
         product
       );
@@ -51,23 +52,23 @@ import puppeteer from "puppeteer";
     itemList.push(item);
     j++;
 
-    await page.waitForSelector(
-      "a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator",
-      { visible: true }
-    ); //waits for button to be visible on page
+    // await page.waitForSelector(
+    //   "a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator",
+    //   { visible: true }
+    // ); //waits for button to be visible on page
 
-    const isDisabled =
-      (await page.$(
-        "span.s-pagination-item.s-pagination-next.s-pagination-disabled"
-      )) !== null;
+    // const isDisabled =
+    //   (await page.$(
+    //     "span.s-pagination-item.s-pagination-next.s-pagination-disabled"
+    //   )) !== null;
 
-    btnDisabled = isDisabled;
+    // btnDisabled = isDisabled;
 
-    if (!btnDisabled) {
-      await page.click(
-        "a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator"
-      );
-    }
+    // if (!btnDisabled) {
+    //   await page.click(
+    //     "a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator"
+    //   );
+    // }
   }
 
   itemList = itemList.filter((item) => item.title);
@@ -77,4 +78,10 @@ import puppeteer from "puppeteer";
     console.log(i + " " + itemList[i].price);
     console.log();
   }
-})();
+
+  await browser.close();
+
+  return itemList;
+};
+
+// scraper();

@@ -1,0 +1,14 @@
+2023/08/18-21:53:55.365 549c Reusing MANIFEST C:\Users\Dabian\Desktop\game-scrpr\src\APi\tmp\Default\Local Storage\leveldb/MANIFEST-000001
+2023/08/18-21:53:55.367 549c Recovering log #62
+2023/08/18-21:53:55.367 549c Level-0 table #64: started
+2023/08/18-21:53:55.377 549c Level-0 table #64: 71656 bytes OK
+2023/08/18-21:53:55.384 549c Delete type=0 #62
+2023/08/18-21:53:55.385 313c Compacting 4@0 + 1@1 files
+2023/08/18-21:53:55.465 313c Generated table #66@0: 27 keys, 71956 bytes
+2023/08/18-21:53:55.466 313c Compacted 4@0 + 1@1 files => 71956 bytes
+2023/08/18-21:53:55.468 313c compacted to: files[ 0 1 0 0 0 0 0 ]
+2023/08/18-21:53:55.470 313c Delete type=2 #53
+2023/08/18-21:53:55.470 313c Delete type=2 #55
+2023/08/18-21:53:55.470 313c Delete type=2 #58
+2023/08/18-21:53:55.470 313c Delete type=2 #61
+2023/08/18-21:53:55.470 313c Delete type=2 #64

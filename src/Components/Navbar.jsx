@@ -9,9 +9,9 @@ const Navbar = () => {
           game-scrpr
         </h1>
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center pr-3">
         <a href="https://github.com/dab1an/game-scrpr" target="_blank">
-          <AiFillGithub size={35} />
+          <AiFillGithub size={38} />
         </a>
       </div>
     </div>
