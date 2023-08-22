@@ -1,5 +1,6 @@
 import Product from "./Components/Product.jsx";
 import Navbar from "./Components/Navbar.jsx";
+import ProductPage from "./Pages/ProductPage.jsx";
 import "./index.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 // import { AiFillHome } from "react-icons/ai";
@@ -11,8 +12,8 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/test"></Route>
+          <Route path="/" element={<ProductPage />}></Route>
+          <Route path="/Products" element={<Home />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
