@@ -5,10 +5,13 @@ import cors from "cors";
 const app = express();
 
 app.use(cors());
-app.get("/", async function (req, res) {
-  let data = await scraper();
-
-  res.json(data);
+app.get("/zip", async function (req, res) {
+  // let data = await scraper();
+  console.log("hi");
+  console.log(req.body);
+  // res.json(data);
 });
 
-app.listen(8001);
+app.listen(8001, () => {
+  console.log(`Example app listening on port ${8001}`);
+});

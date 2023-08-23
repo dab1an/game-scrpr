@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
 
-export const scraper = async () => {
+export const scraper = async (userZip) => {
   const browser = await puppeteer.launch({
     userDataDir: "./tmp",
     defaultViewport: false,
