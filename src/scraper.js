@@ -7,11 +7,21 @@ export const scraper = async (userZip) => {
     defaultViewport: false,
     args: ["--incognito"],
   });
-  const page = await browser.newPage();
+
+  const context = await browser.createIncognitoBrowserContext();
+  const page = await context.newPage();
 
   await page.goto(
     "https://www.amazon.com/s?bbn=468642&rh=n%3A468642%2Cp_n_deal_type%3A23566064011&dc&qid=1691454769&rnid=23566063011"
   );
+
+  try {
+    await page.waitForSelector("#nav-global-location-popover-link", {
+      timeout: 2000,
+    });
+  } catch (e) {
+    await page.reload();
+  }
 
   const popOverBox = await page.$("#nav-global-location-popover-link");
   await popOverBox.click();
@@ -26,6 +36,9 @@ export const scraper = async (userZip) => {
   const zipDone = await page.$(
     "#a-popover-2 > div > div.a-popover-footer > span > span"
   );
+  await zipDone.click();
+
+  await browser.close();
 
   // await zipDone.click();
   //   let btnDisabled = false;
