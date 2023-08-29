@@ -28,7 +28,7 @@ export const scraper = async (userZip) => {
   const popOverBox = await page.$("#nav-global-location-popover-link");
   await popOverBox.click(); //Opening user direction/zip information form
   await page.waitForTimeout(2000); //Timeout to avoid possible captcha
-  await page.type("#GLUXZipUpdateInput", "33183"), { delay: 600 };
+  await page.type("#GLUXZipUpdateInput", userZip), { delay: 600 };
 
   const applyZip = await page.$("#GLUXZipUpdate > span > input"); //Types provided user zip into form
   await page.waitForTimeout(800);
@@ -104,17 +104,7 @@ export const scraper = async (userZip) => {
             parseFloat(item.price.substring(1))) *
             100
         );
-        console.log(item.link);
-
-        fs.appendFile(
-          "productInfo.csv",
-          `${item.title.replace(/,/g, "/")}, ${item.price}, ${item.discount}, ${
-            item.linK
-          }\n`,
-          function (error) {
-            if (error) throw error;
-          }
-        );
+        console.log(item.discount);
 
         itemList.push(item);
       } catch (error) {}
@@ -152,9 +142,19 @@ export const scraper = async (userZip) => {
   itemList = itemList.filter((item) => item.productImage);
   itemList = itemList.filter((item) => item.link);
 
+  for (var i; i < itemList.length; i++) {
+    fs.appendFile(
+      "productInfo.csv",
+      `${itemList[i].title.replace(/,/g, "/")}, ${itemList[i].price}, ${
+        itemList[i].discount
+      } \n`,
+      function (error) {
+        if (error) throw error;
+      }
+    );
+  }
+
   await browser.close();
 
   return itemList;
 };
-
-scraper();

@@ -9,9 +9,9 @@ app.use(cors());
 app.get("/zip", async function (req, res) {
   const zip = req.query.paramZip;
   console.log(zip);
-  // let data = await scraper(zip)
-  // res.json({ scraperData: data })
-  // res.json(data)
+  let data = await scraper(zip);
+  res.json({ scraperData: data });
+  // res.json(data);
 });
 
 app.listen(8001, () => {
