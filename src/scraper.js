@@ -128,6 +128,97 @@ export const scraper = async (userZip) => {
   itemList = itemList.filter((item) => item.discount);
   itemList = itemList.filter((item) => item.productImage);
 
+  let btnDisabled = false;
+  let itemList = [];
+
+  while (!btnDisabled) {
+    //wait for all pending requests to resolve
+
+    await page.waitForSelector("div.s-result-list");
+    const products = await page.$$("div.s-result-item");
+    console.log("\n\nfound " + products.length + " products\n\n");
+
+    for (const product of products) {
+      let item = new Object();
+
+      try {
+        item.title = await page.evaluate(
+          (el) =>
+            el.querySelector(".s-title-instructions-style > h2 > a > span")
+              .textContent,
+          product
+        );
+        console.log("Title:", item.title);
+        console.log();
+
+        item.salePrice = await page.evaluate(
+          (el) => el.querySelector(".a-price > .a-offscreen").textContent,
+          product
+        );
+
+        item.price = await page.evaluate(
+          (el) =>
+            el.querySelector(
+              "a > div > span.a-price.a-text-price > span.a-offscreen"
+            ).textContent,
+          product
+        );
+
+        item.discount = Math.round(
+          ((parseFloat(item.price.substring(1)) -
+            parseFloat(item.salePrice.substring(1))) /
+            parseFloat(item.price.substring(1))) *
+            100
+        );
+
+        item.productImage = await page.evaluate(
+          (el) => el.querySelector(".s-image").getAttribute("src"),
+          product
+        );
+
+        itemList.push(item);
+      } catch (error) {
+        //console.log(product);
+        //console.log(error);
+      }
+    }
+
+    await page.waitForSelector(
+      "a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator",
+      { visible: true }
+    ); // Waits for the button to be visible on the page
+
+    const nextButton = await page.$(
+      "a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator"
+    );
+
+    if (nextButton) {
+      const isDisabled = await nextButton.$(
+        "span.s-pagination-item.s-pagination-next.s-pagination-disabled"
+      );
+
+      if (!isDisabled) {
+        await nextButton.click();
+      }
+
+      if (isDisabled) {
+        btnDisabled = true;
+      }
+    }
+
+    await page.waitForTimeout(1500);
+  }
+
+  itemList = itemList.filter((item) => item.title);
+  itemList = itemList.filter((item) => item.price);
+  itemList = itemList.filter((item) => item.discount);
+  itemList = itemList.filter((item) => item.productImage);
+
+  for (let i = 0; i < itemList.length; i++) {
+    console.log(i + " " + itemList[i].price);
+    console.log();
+  }
+
   await browser.close();
 
   return itemList;
