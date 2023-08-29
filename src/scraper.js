@@ -6,9 +6,9 @@ export const scraper = async (userZip) => {
     headless: false,
     defaultViewport: false,
     args: ["--incognito"],
-  });
+  }); //Loads a headless chromium incognito window, incognito to avoid cache conflicts
 
-  const context = await browser.createIncognitoBrowserContext();
+  const context = await browser.createIncognitoBrowserContext(); //Setting browser to incognito
   const page = await context.newPage();
 
   await page.goto(
@@ -21,14 +21,14 @@ export const scraper = async (userZip) => {
     });
   } catch (e) {
     await page.reload();
-  }
+  } //Used for 404 error handling when loading page in incognito
 
   const popOverBox = await page.$("#nav-global-location-popover-link");
-  await popOverBox.click();
-  await page.waitForTimeout(2000);
-  await page.type("#GLUXZipUpdateInput", "33183"), { delay: 800 };
+  await popOverBox.click(); //Opening user direction/zip information form
+  await page.waitForTimeout(2000); //Timeout to avoid possible captcha
+  await page.type("#GLUXZipUpdateInput", "33183"), { delay: 600 };
 
-  const applyZip = await page.$("#GLUXZipUpdate > span > input");
+  const applyZip = await page.$("#GLUXZipUpdate > span > input"); //Types provided user zip into form
   await page.waitForTimeout(800);
   await applyZip.click();
 
@@ -36,105 +36,101 @@ export const scraper = async (userZip) => {
   const zipDone = await page.$(
     "#a-popover-2 > div > div.a-popover-footer > span > span"
   );
-  await zipDone.click();
+  await zipDone.click(); //Confirms form information
+
+  await page.waitForTimeout(5000);
+
+  let itemList = [];
+  let btnDisabled = false;
+
+  while (!btnDisabled) {
+    await page.waitForSelector('[data-cel-widget="search_result_0"]', {
+      visible: true,
+    }); //Waits for first product to load to ensure all get requests are resolved
+
+    await page.waitForTimeout(800);
+
+    const products = await page.$$(
+      "div.s-main-slot.s-result-list.s-search-results.sg-row > .s-result-item"
+    );
+    console.log("\n\nfound " + products.length + " products\n\n");
+
+    for (const product of products) {
+      let item = new Object();
+
+      try {
+        item.title = await page.evaluate(
+          (el) =>
+            el.querySelector(".s-title-instructions-style > h2 > a > span")
+              .textContent,
+          product
+        );
+        console.log("Title", item.title);
+
+        item.salePrice = await page.evaluate(
+          (el) => el.querySelector(".a-price > .a-offscreen").textContent,
+          product
+        );
+
+        item.price = await page.evaluate(
+          (el) =>
+            el.querySelector(
+              "a > div > span.a-price.a-text-price > span.a-offscreen"
+            ).textContent,
+          product
+        );
+
+        item.productImage = await page.evaluate(
+          (el) => el.querySelector(".s-image").getAttribute("src"),
+          product
+        );
+
+        item.discount = Math.round(
+          ((parseFloat(item.price.substring(1)) -
+            parseFloat(item.salePrice.substring(1))) /
+            parseFloat(item.price.substring(1))) *
+            100
+        );
+
+        itemList.push(item);
+      } catch (error) {}
+    }
+
+    await page.waitForSelector(
+      "a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator",
+      { visible: true }
+    ); //Waits for next button to be visible on page before clicking
+
+    const isDisabled =
+      (await page.$(
+        "span.s-pagination-item.s-pagination-next.s-pagination-disabled"
+      )) !== null;
+
+    btnDisabled = isDisabled;
+
+    if (!isDisabled) {
+      await Promise.all([
+        page.click(
+          "a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator"
+        ),
+        page.waitForNavigation({ waitUntil: "networkidle2" }), //Awaits for the page navigation to allow products to load
+      ]);
+    }
+
+    if (btnDisabled === true) {
+      await browser.close();
+    }
+  }
+
+  //Filtering out unwanted items with null values
+  itemList = itemList.filter((item) => item.title);
+  itemList = itemList.filter((item) => item.price);
+  itemList = itemList.filter((item) => item.discount);
+  itemList = itemList.filter((item) => item.productImage);
 
   await browser.close();
 
-  // await zipDone.click();
-  //   let btnDisabled = false;
-  //   let itemList = [];
-
-  //   while (!btnDisabled) {
-  //     //wait for all pending requests to resolve
-
-  //     await page.waitForSelector("div.s-result-list");
-  //     const products = await page.$$("div.s-result-item");
-  //     console.log("\n\nfound " + products.length + " products\n\n");
-
-  //     for (const product of products) {
-  //       let item = new Object();
-
-  //       try {
-  //         item.title = await page.evaluate(
-  //           (el) =>
-  //             el.querySelector(".s-title-instructions-style > h2 > a > span")
-  //               .textContent,
-  //           product
-  //         );
-  //         console.log("Title", item.title);
-
-  //         item.salePrice = await page.evaluate(
-  //           (el) => el.querySelector(".a-price > .a-offscreen").textContent,
-  //           product
-  //         );
-
-  //         item.price = await page.evaluate(
-  //           (el) =>
-  //             el.querySelector(
-  //               "a > div > span.a-price.a-text-price > span.a-offscreen"
-  //             ).textContent,
-  //           product
-  //         );
-
-  //         item.discount = Math.round(
-  //           ((parseFloat(item.price.substring(1)) -
-  //             parseFloat(item.salePrice.substring(1))) /
-  //             parseFloat(item.price.substring(1))) *
-  //             100
-  //         );
-
-  //         item.productImage = await page.evaluate(
-  //           (el) => el.querySelector(".s-image").getAttribute("src"),
-  //           product
-  //         );
-
-  //         itemList.push(item);
-  //       } catch (error) {
-  //         //console.log(product);
-  //         //console.log(error);
-  //       }
-  //     }
-
-  //     await page.waitForSelector(
-  //       "a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator",
-  //       { visible: true }
-  //     ); // Waits for the button to be visible on the page
-
-  //     const nextButton = await page.$(
-  //       "a.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-separator"
-  //     );
-
-  //     if (nextButton) {
-  //       const isDisabled = await nextButton.$(
-  //         "span.s-pagination-item.s-pagination-next.s-pagination-disabled"
-  //       );
-
-  //       if (!isDisabled) {
-  //         await nextButton.click();
-  //       }
-
-  //       if (isDisabled) {
-  //         btnDisabled = true;
-  //       }
-  //     }
-
-  //     await page.waitForTimeout(1500);
-  //   }
-
-  //   itemList = itemList.filter((item) => item.title);
-  //   itemList = itemList.filter((item) => item.price);
-  //   itemList = itemList.filter((item) => item.discount);
-  //   itemList = itemList.filter((item) => item.productImage);
-
-  //   for (let i = 0; i < itemList.length; i++) {
-  //     console.log(i + " " + itemList[i].title);
-  //     console.log();
-  //   }
-
-  //   await browser.close();
-
-  //   return itemList;
-  // };
+  return itemList;
 };
 
 scraper();
