@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import Product from "../Components/Product";
+import Loading from "../Components/Loading";
 
 const fetchData = async function () {
   const response = await fetch("http://localhost:8001", {
@@ -16,7 +17,7 @@ const fetchData = async function () {
 const Home = () => {
   const [products, setProducts] = useState();
 
-  useEffect(function () {
+  useEffect(() => {
     async function fetch() {
       const data = await fetchData();
       setProducts(data);
@@ -26,17 +27,22 @@ const Home = () => {
   }, []);
 
   if (!products || !products.length) {
-    return <p>loading</p>;
+    return (
+      <div className="w-[50vw] h-[50vh]">
+        {" "}
+        <Loading />
+      </div>
+    );
   }
 
   return (
     <div>
-      {products.map(function (product) {
+      {products.map((product) => {
         <Product
           title={product.title}
           price={product.price}
           salePrice={product.salePrice}
-          percentOff={product.discount}
+          discount={product.discount}
           productImage={product.productImage}
         />;
       })}
