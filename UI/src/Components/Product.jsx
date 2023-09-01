@@ -2,11 +2,11 @@ import React from "react";
 
 const Product = ({ productImage, discount, title, price, salePrice, link }) => {
   return (
-    <div className="flex items-center bg-white border-[3px] border-solid border-gray-300 rounded-md p-3 shadow-md w-[450px]">
+    <div className="flex items-center bg-white border-[3px] border-solid border-gray-300 rounded-md p-3 shadow-md w-[400px]">
       <img
         src={productImage || ""}
         alt=""
-        className="rounded-sm h-[125px] w-[125px]"
+        className="rounded-sm max-h-[125px] min-w-[125px] "
       />
 
       <div className="flex flex-col p-2">

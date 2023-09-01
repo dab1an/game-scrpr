@@ -7,14 +7,18 @@ const ProductPage = () => {
   const [zip, setZip] = useState("");
   const [products, setProducts] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [showZip, setShowZip] = useState(true);
+
   async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
+    setShowZip(false);
     axios
       .get(`http://localhost:8001/zip?paramZip=${zip}`)
       .then((res) => {
         console.log(res.data.scraperData);
         setProducts(res.data.scraperData);
+
         setIsLoading(false);
       })
       .catch((err) => {
@@ -24,8 +28,8 @@ const ProductPage = () => {
   }
 
   return (
-    <>
-      {!products && (
+    <div>
+      {showZip && (
         <div className=" p-2 flex justify-center items-center h-24">
           <form onSubmit={handleSubmit} className="flex w-full">
             <div className="flex">
@@ -47,22 +51,39 @@ const ProductPage = () => {
           </form>
         </div>
       )}
-      {isLoading && <Loading />}
 
-      {products &&
-        products.map((product) => {
-          console.log(product);
-          return (
-            <Product
-              title={product.title}
-              price={product.price}
-              salePrice={product.salePrice}
-              discount={product.discount}
-              productImage={product.productImage}
-            />
-          );
-        })}
-    </>
+      {isLoading && (
+        <div className="flex justify-center items-center">
+          <Loading />
+        </div>
+      )}
+
+      <div className="flex flex-wrap flex-col p-2 items-center justify-center gap-3">
+        {products && (
+          <h1 className="text-2xl flex items-start">
+            {" "}
+            Found:
+            <span className="font-bold"> {products.length} </span> Products
+          </h1>
+        )}
+        <div className="flex flex-wrap gap-3 justify-center items-center">
+          {products &&
+            products.map((product) => {
+              console.log(product);
+              return (
+                <Product
+                  title={product.title}
+                  price={product.price}
+                  salePrice={product.salePrice}
+                  discount={product.discount}
+                  productImage={product.productImage}
+                  link={product.link}
+                />
+              );
+            })}
+        </div>
+      </div>
+    </div>
   );
 };
 

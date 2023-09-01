@@ -36,7 +36,7 @@ const Home = () => {
   }
 
   return (
-    <div>
+    <div className="flex gap-2 w-screen">
       {products.map((product) => {
         <Product
           title={product.title}
