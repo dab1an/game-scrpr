@@ -2,7 +2,7 @@ import { error } from "console";
 import fs from "fs";
 import puppeteer from "puppeteer";
 
-export const scraper = async (userZip) => {
+export const scraper = async (userZip, searchTerm) => {
   const browser = await puppeteer.launch({
     userDataDir: "./tmp",
     headless: false,
@@ -104,6 +104,7 @@ export const scraper = async (userZip) => {
             parseFloat(item.price.substring(1))) *
             100
         );
+
         console.log(item.discount);
 
         itemList.push(item);
@@ -141,6 +142,15 @@ export const scraper = async (userZip) => {
   itemList = itemList.filter((item) => item.discount);
   itemList = itemList.filter((item) => item.productImage);
   itemList = itemList.filter((item) => item.link);
+
+  // for (let i = 0; i < 6; i++) {
+  //   console.log(itemList[i].title);
+  //   console.log();
+  //   console.log(itemList[i].price);
+  //   console.log();
+  //   console.log(itemList[i].salePrice);
+  //   console.log(itemList[i].discount);
+  // }
 
   for (let i; i < itemList.length; i++) {
     fs.appendFile(

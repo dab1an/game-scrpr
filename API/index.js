@@ -8,8 +8,10 @@ app.use(express.json());
 app.use(cors());
 app.get("/zip", async function (req, res) {
   const zip = req.query.paramZip;
+  const searchTerm = req.query.searchTerm;
   console.log(zip);
-  let data = await scraper(zip);
+  console.log(searchTerm);
+  let data = await scraper(zip, searchTerm);
   res.json({ scraperData: data });
   // res.json(data);
 });
