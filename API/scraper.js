@@ -13,34 +13,18 @@ export const scraper = async (userZip, searchTerm) => {
   const context = await browser.createIncognitoBrowserContext(); //Setting browser to incognito
   const page = await context.newPage();
 
-  await page.goto(
-    "https://www.amazon.com/s?bbn=468642&rh=n%3A468642%2Cp_n_deal_type%3A23566064011&dc&qid=1691454769&rnid=23566063011"
-  );
+  await page.goto("https://www.amazon.com");
 
-  try {
-    await page.waitForSelector("#nav-global-location-popover-link", {
-      timeout: 2000,
-    });
-  } catch (e) {
-    await page.reload();
-  } //Used for 404 error handling when loading page in incognito
+  searchNav(page, userZip, searchTerm);
 
-  const popOverBox = await page.$("#nav-global-location-popover-link");
-  await popOverBox.click(); //Opening user direction/zip information form
-  await page.waitForTimeout(2000); //Timeout to avoid possible captcha
-  await page.type("#GLUXZipUpdateInput", userZip), { delay: 600 };
+  page.waitForTimeout(3000);
 
-  const applyZip = await page.$("#GLUXZipUpdate > span > input"); //Types provided user zip into form
-  await page.waitForTimeout(800);
-  await applyZip.click();
+  await page.waitForSelector("#p_n_deal_type\\/23566064011 > span > a > span");
+  await page.click("#p_n_deal_type\\/23566064011 > span > a > span");
 
-  await page.waitForTimeout(800);
-  const zipDone = await page.$(
-    "#a-popover-2 > div > div.a-popover-footer > span > span"
-  );
-  await zipDone.click(); //Confirms form information
+  page.waitForTimeout(8000);
 
-  await page.waitForTimeout(5000);
+  await page.waitForTimeout(2000);
 
   let itemList = [];
   let btnDisabled = false;
@@ -50,7 +34,7 @@ export const scraper = async (userZip, searchTerm) => {
       visible: true,
     }); //Waits for first product to load to ensure all get requests are resolved
 
-    await page.waitForTimeout(800);
+    await page.waitForTimeout(700);
 
     const products = await page.$$(
       "div.s-main-slot.s-result-list.s-search-results.sg-row > .s-result-item"
@@ -72,6 +56,7 @@ export const scraper = async (userZip, searchTerm) => {
           (el) => el.querySelector(".a-price > .a-offscreen").textContent,
           product
         );
+        let salePriceCommaless = item.salePrice.replace(/,/g, ""); //Sale price without commas for calculation
 
         item.price = await page.evaluate(
           (el) =>
@@ -80,6 +65,7 @@ export const scraper = async (userZip, searchTerm) => {
             ).textContent,
           product
         );
+        let priceComaless = item.price.replace(/,/g, "");
 
         item.productImage = await page.evaluate(
           (el) => el.querySelector(".s-image").getAttribute("src"),
@@ -99,13 +85,13 @@ export const scraper = async (userZip, searchTerm) => {
           ));
 
         item.discount = Math.round(
-          ((parseFloat(item.price.substring(1)) -
-            parseFloat(item.salePrice.substring(1))) /
-            parseFloat(item.price.substring(1))) *
+          ((parseFloat(priceComaless.substring(1)) -
+            parseFloat(salePriceCommaless.substring(1))) /
+            parseFloat(priceComaless.substring(1))) *
             100
         );
 
-        console.log(item.discount);
+        console.log(item.price);
 
         itemList.push(item);
       } catch (error) {}
@@ -138,11 +124,12 @@ export const scraper = async (userZip, searchTerm) => {
 
   //Filtering out unwanted items with null values
   itemList = itemList.filter((item) => item.title);
-  itemList = itemList.filter((item) => item.price);
-  itemList = itemList.filter((item) => item.discount);
-  itemList = itemList.filter((item) => item.productImage);
-  itemList = itemList.filter((item) => item.link);
+  // itemList = itemList.filter((item) => item.price);
+  // itemList = itemList.filter((item) => item.discount);
+  // itemList = itemList.filter((item) => item.productImage);
+  // itemList = itemList.filter((item) => item.link);
 
+  console.log(itemList.length);
   // for (let i = 0; i < 6; i++) {
   //   console.log(itemList[i].title);
   //   console.log();
@@ -168,3 +155,39 @@ export const scraper = async (userZip, searchTerm) => {
 
   return itemList;
 };
+
+async function searchNav(page, userZip, searchTerm) {
+  try {
+    await page.waitForSelector("#nav-global-location-popover-link", {
+      timeout: 2000,
+    });
+  } catch (e) {
+    await page.reload();
+  } //Used for 404 error handling when loading page in incognito
+
+  const popOverBox = await page.$("#nav-global-location-popover-link");
+  await popOverBox.click(); //Opening user direction/zip information form
+  await page.waitForTimeout(2000); //Timeout to avoid possible captcha
+  await page.type("#GLUXZipUpdateInput", userZip), { delay: 600 };
+
+  const applyZip = await page.$("#GLUXZipUpdate > span > input"); //Types provided user zip into form
+  await page.waitForTimeout(800);
+  await applyZip.click();
+
+  await page.waitForTimeout(800);
+  const zipDone = await page.$(
+    "#a-popover-1 > div > div.a-popover-footer > span > span > span > button"
+  );
+  await zipDone.click(); //Confirms form information
+
+  await page.waitForTimeout(4000);
+
+  const searchBar = await page.$("#twotabsearchtextbox");
+  await page.waitForTimeout(1000);
+  await searchBar.type(searchTerm);
+
+  await page.waitForTimeout(500);
+  const searchSubmit = await page.$("#nav-search-submit-button");
+  await searchSubmit.click();
+}
+// scraper("33183", "Computer");
