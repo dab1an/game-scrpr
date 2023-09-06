@@ -38,36 +38,52 @@ const ProductPage = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col justify-center h-screen w-[90%]">
       {showZip && (
-        <div className=" p-2 flex justify-center items-center h-24">
-          <form onSubmit={handleSubmit} className="flex w-full">
-            <div className="flex flex-col">
-              <input
-                type="text"
-                placeholder="Enter Zip Code"
-                className="pl-2 w-2/3 h-[60px] text-2xl rounded-md border border-gray-500  outline-none"
-                onChange={(e) => {
-                  setZip(e.target.value);
-                }}
-              />
+        <div className="flex justify-center items-center w-full">
+          <div className="  w-[40%] break-normal on-load h-full">
+            <h1 className="text-[65px] font-bold txt-shadow">
+              Forget the endless discount searching{" "}
+            </h1>
+            <h2 className="text-[21px]">
+              Tell us what you're looking for and we'll do the rest.
+            </h2>
+            <br />
+            <br />
+            {/* <h3 className="text-gray-400">
+              Just enter your zip code and the product you're trying to save on
+            </h3> */}
+          </div>
 
-              <input
-                type="text"
-                placeholder="Search 🔍"
-                className="pl-2 w-2/3 h-[60px] text-2xl rounded-md border border-gray-500  outline-none"
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                }}
-              />
-              <button
-                type="submit"
-                className=" bg-black text-white p-1 rounded-md w-1/3 text-2xl font-bold hover:bg-gray-100 hover:text-black hover:border-t hover:border-t-gray-500 hover:border-r hover:border-r-gray-500 hover:border-b hover:border-b-gray-500 hover:border-l hover:border-l-gray-500 "
-              >
-                Submit
-              </button>
-            </div>
-          </form>
+          <div className="flex justify-center items-center w-[60%] on-load-delay">
+            <form onSubmit={handleSubmit}>
+              <div className="flex flex-col gap-3 items-center justify-center">
+                <input
+                  type="text"
+                  placeholder="Enter Zip Code"
+                  className="pl-2 w-2/3 h-[60px] text-2xl rounded-md border border-gray-500  outline-none"
+                  onChange={(e) => {
+                    setZip(e.target.value);
+                  }}
+                />
+
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="pl-2 w-2/3 h-[60px] text-2xl rounded-md border border-gray-500  outline-none"
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                  }}
+                />
+                <button
+                  type="submit"
+                  className=" bg-black text-white p-1 rounded-md w-1/3 text-2xl font-bold hover:bg-gray-100 hover:text-black hover:border-t hover:border-t-gray-500 hover:border-r hover:border-r-gray-500 hover:border-b hover:border-b-gray-500 hover:border-l hover:border-l-gray-500 "
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 
@@ -77,7 +93,7 @@ const ProductPage = () => {
         </div>
       )}
 
-      <div className="flex flex-wrap flex-col p-2 items-center justify-center gap-3">
+      <div className="flex flex-wrap flex-col items-center justify-center gap-3">
         {products && (
           <h1 className="text-2xl flex items-start">
             {" "}

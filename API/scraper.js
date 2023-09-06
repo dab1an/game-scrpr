@@ -5,7 +5,6 @@ import puppeteer from "puppeteer";
 export const scraper = async (userZip, searchTerm) => {
   const browser = await puppeteer.launch({
     userDataDir: "./tmp",
-    headless: false,
     defaultViewport: false,
     args: ["--incognito"],
   }); //Loads a headless chromium incognito window, incognito to avoid cache conflicts

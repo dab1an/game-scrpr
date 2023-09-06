@@ -8,7 +8,7 @@ import Home from "./Pages/Home.jsx";
 
 function App() {
   return (
-    <div className="app flex flex-col items-center w-full bg-white">
+    <div className="app flex flex-col justify-center items-center w-full bg-white">
       <BrowserRouter>
         <Navbar />
         <Routes>
